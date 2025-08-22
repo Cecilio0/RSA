@@ -135,15 +135,84 @@ RSA is used in many security applications:
 3. **Quantum Vulnerability**: Vulnerable to quantum computers running Shor's algorithm
 4. **Key Size Growth**: Requires increasingly larger keys for future security
 
+## File Structure
+
+The implementation is organized into multiple modules for better code organization:
+
+### Core Modules
+
+- **`prime_utils.py`** - Prime number utilities and operations
+  - Miller-Rabin primality testing
+  - Prime number generation (standard, safe, and strong primes)
+  - Prime pair generation for RSA
+  - Utility functions for prime operations
+
+- **`rsa_implementation.py`** - Core RSA cryptographic functions
+  - RSA key pair generation
+  - Encryption and decryption algorithms
+  - Modular arithmetic utilities (GCD, extended GCD, modular inverse)
+  - String-to-integer conversion utilities
+
+- **`main.py`** - Demonstration and interactive functionality
+  - RSA algorithm demonstration with examples
+  - Interactive mode for testing encryption/decryption
+  - Performance benchmarking for different key sizes
+  - User-friendly menu system
+
+## Usage
+
+### Running the Demonstration
+
+```bash
+python main.py
+```
+
+This will launch the main menu with options for:
+1. RSA demonstration with examples
+2. Interactive mode for custom testing
+3. Performance benchmarking
+4. Exit
+
+### Using as a Library
+
+You can import and use the RSA functions directly:
+
+```python
+from rsa_implementation import generate_keypair, encrypt_string, decrypt_string
+from prime_utils import generate_prime, is_prime
+
+# Generate RSA key pair
+public_key, private_key = generate_keypair(2048)
+
+# Encrypt a message
+message = "Hello, RSA!"
+ciphertext = encrypt_string(message, public_key)
+
+# Decrypt the message
+decrypted = decrypt_string(ciphertext, private_key)
+
+# Generate prime numbers
+prime = generate_prime(512)  # 512-bit prime
+```
+
 ## Implementation Notes
 
 The included Python implementation demonstrates:
 
-- Prime number generation and testing
-- Key pair generation
-- Modular exponentiation
-- Basic encryption and decryption
-- Example usage with text messages
+- Miller-Rabin probabilistic primality testing
+- Cryptographically secure prime number generation
+- Complete RSA key pair generation process
+- Modular exponentiation and arithmetic operations
+- String encoding/decoding for message processing
+- Interactive testing and benchmarking tools
+
+### Key Features
+
+- **Modular Design**: Separated concerns with dedicated modules for primes, RSA core, and demonstrations
+- **Educational Focus**: Comprehensive comments and step-by-step implementation
+- **Interactive Testing**: Built-in tools for experimenting with different key sizes and messages
+- **Performance Analysis**: Benchmarking tools to compare different key sizes
+- **Security Considerations**: Implements best practices for educational cryptographic code
 
 This implementation is for educational purposes. Production systems should use well-tested cryptographic libraries like `cryptography` or `pycryptodome`.
 
