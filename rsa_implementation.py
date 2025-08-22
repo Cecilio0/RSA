@@ -173,6 +173,31 @@ def int_to_string(number: int) -> str:
     byte_length = (number.bit_length() + 7) // 8
     return number.to_bytes(byte_length, byteorder='big').decode('utf-8')
 
+def int_to_hex(number: int) -> str:
+    """
+    Convert an integer to a hexadecimal string representation.
+    
+    Args:
+        message: Integer message to convert
+
+    Returns:
+        Integer representation of the message
+    """
+    hex_string = number.to_bytes((number.bit_length() + 7) // 8, byteorder='big').hex()
+    return hex_string
+
+def hex_to_int(hex_string: str) -> int:
+    """
+    Convert a hexadecimal string representation back to an integer.
+
+    Args:
+        hex_string: Hexadecimal string to convert
+
+    Returns:
+        Integer representation of the hexadecimal string
+    """
+    return int.from_bytes(bytes.fromhex(hex_string), byteorder='big')
+
 
 def encrypt_string(message: str, public_key: Tuple[int, int]) -> int:
     """
@@ -202,5 +227,37 @@ def decrypt_string(ciphertext: int, private_key: Tuple[int, int]) -> str:
     """
     decrypted_int = decrypt(ciphertext, private_key)
     return int_to_string(decrypted_int)
+
+def encrypt_hex(message: str, public_key: Tuple[int, int]) -> int:
+    """
+    Encrypt a string message using RSA.
+    
+    Args:
+        message: String message to encrypt
+        public_key: RSA public key (n, e)
+        
+    Returns:
+        Encrypted message as integer
+    """
+    message_int = string_to_int(message)
+    cipher_text = encrypt(message_int, public_key)
+    return int_to_hex(cipher_text)
+
+
+def decrypt_hex(ciphertext: str, private_key: Tuple[int, int]) -> str:
+    """
+    Decrypt an integer ciphertext back to hex string using RSA.
+
+    Args:
+        ciphertext: Encrypted message as integer
+        private_key: RSA private key (n, d)
+        
+    Returns:
+        Decrypted string message
+    """
+    ciphertext = hex_to_int(ciphertext)
+    decrypted_int = decrypt(ciphertext, private_key)
+    hex_string = int_to_hex(decrypted_int)
+    return hex_string
 
 

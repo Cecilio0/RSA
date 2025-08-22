@@ -12,12 +12,16 @@ Date: 2025
 
 import random
 from rsa_implementation import (
+    decrypt_hex,
+    encrypt_hex,
     generate_keypair,
     encrypt,
     decrypt,
     encrypt_string,
     decrypt_string
 )
+
+import binascii
 
 
 def demonstrate_rsa():
@@ -58,7 +62,7 @@ def demonstrate_rsa():
     print(f"\nVerification: {'SUCCESS' if original_message == decrypted_message else 'FAILED'}")
     
     # Test with numbers
-    print(f"\n" + "-" * 40)
+    print("\n" + "-" * 40)
     print("Testing with numerical message:")
     
     original_number = 42
@@ -92,9 +96,11 @@ def interactive_mode():
             print("2. Decrypt a message (enter ciphertext as integer)")
             print("3. Generate new key pair")
             print("4. Show current public key")
-            print("5. Exit")
-            
-            choice = input("\nEnter your choice (1-5): ").strip()
+            print("5. Encode message to hex and encrypt")
+            print("6. Decrypt hex message and decode")
+            print("7. Exit")
+        
+            choice = input("\nEnter your choice (1-7): ").strip()
             
             if choice == '1':
                 message = input("Enter message to encrypt: ")
@@ -122,8 +128,28 @@ def interactive_mode():
                 print(f"Public key (n, e):")
                 print(f"n = {n}")
                 print(f"e = {e}")
-            
+
             elif choice == '5':
+                message = input("Enter message to encode to hex and encrypt: ")
+                try:
+                    hex_message = binascii.hexlify(message.encode()).decode()
+                    ciphertext = encrypt_hex(message, public_key)
+                    print(f"Hex encoded message: {hex_message}")
+                    print(f"Encrypted hex message: {ciphertext}")
+                except Exception as e:
+                    print(f"Error: {e}")
+
+            elif choice == '6':
+                try:
+                    ciphertext = input("Enter ciphertext (as hex string): ")
+                    decrypted_hex = decrypt_hex(ciphertext, private_key)
+                    print(f"Decrypted hex message: {decrypted_hex}")
+                    decoded_back = binascii.unhexlify(decrypted_hex.encode()).decode()
+                    print(f"Decoded back to string: '{decoded_back}'")
+                except Exception as e:
+                    print(f"Error: {e}")
+            
+            elif choice == '7':
                 print("Goodbye!")
                 break
             
@@ -189,25 +215,42 @@ def main():
         print("1. Run RSA demonstration")
         print("2. Enter interactive mode") 
         print("3. Run performance benchmark")
-        print("4. Exit")
+        print("4. Run hex encoding demonstration")
+        print("5. Exit")
         
-        choice = input("\nEnter your choice (1-4): ").strip()
+        choice = input("\nEnter your choice (1-5): ").strip()
         
         if choice == '1':
             # Set seed for reproducible results in demonstration
             random.seed(42)
             demonstrate_rsa()
-            
         elif choice == '2':
             interactive_mode()
-            
         elif choice == '3':
             run_benchmark()
-            
         elif choice == '4':
+            # Run only hex encoding demonstration
+            print("\n" + "=" * 60)
+            print("Hex Encoding Demonstration")
+            print("=" * 60)
+            keysize = 1024
+            public_key, private_key = generate_keypair(keysize)
+            message = input("Enter message to encode to hex and encrypt: ")
+            hex_message = binascii.hexlify(message.encode()).decode()
+            print(f"Hex encoded message: {hex_message}")
+            ciphertext = encrypt_string(hex_message, public_key)
+            print(f"Encrypted hex message: {ciphertext}")
+            decrypted_hex = decrypt_string(ciphertext, private_key)
+            print(f"Decrypted hex message: {decrypted_hex}")
+            try:
+                decoded_back = binascii.unhexlify(decrypted_hex.encode()).decode()
+                print(f"Decoded back to string: '{decoded_back}'")
+                print(f"Verification: {'SUCCESS' if decoded_back == message else 'FAILED'}")
+            except Exception as e:
+                print(f"Error decoding hex: {e}")
+        elif choice == '5':
             print("Thank you for using the RSA implementation!")
             break
-            
         else:
             print("Invalid choice. Please try again.")
 
