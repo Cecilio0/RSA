@@ -156,7 +156,6 @@ The implementation is organized into multiple modules for better code organizati
 - **`main.py`** - Demonstration and interactive functionality
   - RSA algorithm demonstration with examples
   - Interactive mode for testing encryption/decryption
-  - Performance benchmarking for different key sizes
   - User-friendly menu system
 
 ## Usage

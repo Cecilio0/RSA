@@ -47,6 +47,7 @@ def extended_gcd(a: int, b: int) -> Tuple[int, int, int]:
     x = y1 - (b // a) * x1
     y = x1
     
+    print(gcd_val, x, y, a, b)
     return gcd_val, x, y
 
 
@@ -102,7 +103,7 @@ def generate_keypair(keysize: int = 2048) -> Tuple[Tuple[int, int], Tuple[int, i
         e = random.randrange(2, phi)
     
     # Step 5: Calculate d, the modular multiplicative inverse of e
-    d = mod_inverse(e, phi)
+    d = mod_inverse(e, phi) # d = e^(-1) mod φ(n)
     if d is None:
         raise ValueError("Cannot compute modular inverse")
     
@@ -128,7 +129,7 @@ def encrypt(message: int, public_key: Tuple[int, int]) -> int:
     if message >= n:
         raise ValueError(f"Message too large. Must be less than {n}")
     
-    return pow(message, e, n)
+    return pow(message, e, n) # c = m^e mod n
 
 
 def decrypt(ciphertext: int, private_key: Tuple[int, int]) -> int:
@@ -143,7 +144,7 @@ def decrypt(ciphertext: int, private_key: Tuple[int, int]) -> int:
         The decrypted message as an integer
     """
     n, d = private_key
-    return pow(ciphertext, d, n)
+    return pow(ciphertext, d, n) # m' = c^d mod n
 
 
 def string_to_int(message: str) -> int:

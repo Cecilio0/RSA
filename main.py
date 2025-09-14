@@ -161,47 +161,6 @@ def interactive_mode():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-
-def run_benchmark():
-    """
-    Benchmark RSA operations with different key sizes.
-    """
-    import time
-    
-    print(f"\n" + "=" * 60)
-    print("RSA Performance Benchmark")
-    print("=" * 60)
-    
-    key_sizes = [512, 1024, 2048]
-    message = "Benchmark message for RSA performance testing!"
-    
-    for keysize in key_sizes:
-        print(f"\nTesting {keysize}-bit keys:")
-        print("-" * 30)
-        
-        # Time key generation
-        start_time = time.time()
-        public_key, private_key = generate_keypair(keysize)
-        key_gen_time = time.time() - start_time
-        print(f"Key generation: {key_gen_time:.3f} seconds")
-        
-        # Time encryption
-        start_time = time.time()
-        ciphertext = encrypt_string(message, public_key)
-        encrypt_time = time.time() - start_time
-        print(f"Encryption: {encrypt_time:.6f} seconds")
-        
-        # Time decryption
-        start_time = time.time()
-        decrypted = decrypt_string(ciphertext, private_key)
-        decrypt_time = time.time() - start_time
-        print(f"Decryption: {decrypt_time:.6f} seconds")
-        
-        # Verify correctness
-        success = message == decrypted
-        print(f"Verification: {'SUCCESS' if success else 'FAILED'}")
-
-
 def main():
     """
     Main function to run demonstrations and interactive mode.
@@ -214,11 +173,10 @@ def main():
         print("\nMain Menu:")
         print("1. Run RSA demonstration")
         print("2. Enter interactive mode") 
-        print("3. Run performance benchmark")
-        print("4. Run hex encoding demonstration")
-        print("5. Exit")
+        print("3. Run hex encoding demonstration")
+        print("4. Exit")
         
-        choice = input("\nEnter your choice (1-5): ").strip()
+        choice = input("\nEnter your choice (1-4): ").strip()
         
         if choice == '1':
             # Set seed for reproducible results in demonstration
@@ -227,8 +185,6 @@ def main():
         elif choice == '2':
             interactive_mode()
         elif choice == '3':
-            run_benchmark()
-        elif choice == '4':
             # Run only hex encoding demonstration
             print("\n" + "=" * 60)
             print("Hex Encoding Demonstration")
@@ -248,7 +204,7 @@ def main():
                 print(f"Verification: {'SUCCESS' if decoded_back == message else 'FAILED'}")
             except Exception as e:
                 print(f"Error decoding hex: {e}")
-        elif choice == '5':
+        elif choice == '4':
             print("Thank you for using the RSA implementation!")
             break
         else:
