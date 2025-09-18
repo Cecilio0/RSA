@@ -47,7 +47,6 @@ def extended_gcd(a: int, b: int) -> Tuple[int, int, int]:
     x = y1 - (b // a) * x1
     y = x1
     
-    print(gcd_val, x, y, a, b)
     return gcd_val, x, y
 
 
